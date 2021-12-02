@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - 18080:80
+    volumes_from:
+      - app
+    depends_on:
+      - app
+
+  app:
+    build: .
+    image: auth-with-devise
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@db:5432
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13.5
+    environment: 
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+    ports:
+      - '5432:5432'
+    volumes:
+      - auth-with-devise-data:/var/lib/postgresql/data
+
+volumes:
+  auth-with-devise-data:
+    driver: local
