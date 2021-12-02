@@ -15,15 +15,6 @@ RUN apt-get update && \
     bundle install && \
     rm -fr /usr/local/bundle/cache/*
 
-
-# gemインストールの高速化
-#   gem: --nodocument, --global jobs 4
-#RUN echo 'gem: --no-document' >> ~/.gemrc && \
-#    cp ~/.gemrc /etc/gemrc && \
-#    bundle config --global jobs 4 && \
-#    bundle install && \
-#    rm -fr /usr/local/bundle/cache/*
-
 COPY . ${APP_ROOT}/
 
 EXPOSE 8080
