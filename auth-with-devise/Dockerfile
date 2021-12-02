@@ -1,0 +1,31 @@
+FROM ruby:3.0.3
+
+ENV APP_ROOT /app
+WORKDIR ${APP_ROOT}
+
+COPY Gemfile ${APP_ROOT}
+COPY Gemfile.lock ${APP_ROOT}
+
+RUN apt-get update && \
+    apt-get install -y postgresql-13 && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo 'gem: --no-document' >> ~/.gemrc && \
+    cp ~/.gemrc /etc/gemrc && \
+    bundle config --global jobs 4 && \
+    bundle install && \
+    rm -fr /usr/local/bundle/cache/*
+
+
+# gemインストールの高速化
+#   gem: --nodocument, --global jobs 4
+#RUN echo 'gem: --no-document' >> ~/.gemrc && \
+#    cp ~/.gemrc /etc/gemrc && \
+#    bundle config --global jobs 4 && \
+#    bundle install && \
+#    rm -fr /usr/local/bundle/cache/*
+
+COPY . ${APP_ROOT}/
+
+EXPOSE 8080
+
+#CMD ["puma", "-t", "5:5", "-p", "8080", "-e", "production", "-C", "config/puma.rb"]
