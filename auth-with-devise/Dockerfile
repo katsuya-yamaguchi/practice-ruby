@@ -17,6 +17,4 @@ RUN apt-get update && \
 
 COPY . ${APP_ROOT}/
 
-EXPOSE 8080
-
-#CMD ["puma", "-t", "5:5", "-p", "8080", "-e", "production", "-C", "config/puma.rb"]
+CMD ["puma", "-C", "config/puma.rb"]
