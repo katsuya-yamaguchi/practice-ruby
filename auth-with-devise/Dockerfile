@@ -8,6 +8,9 @@ COPY Gemfile.lock ${APP_ROOT}
 
 RUN apt-get update && \
     apt-get install -y postgresql-13 && \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install yarn && \
     rm -rf /var/lib/apt/lists/* && \
     echo 'gem: --no-document' >> ~/.gemrc && \
     cp ~/.gemrc /etc/gemrc && \
